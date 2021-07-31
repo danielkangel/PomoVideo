@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Options</title>
+    <link rel="icon" href="img/icon.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Suez+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+    <div class="col-lg-5 col-md-6 col-10 container">
+        <nav class="navbar navbar-light border-bottom">
+            <a class="navbar-brand" href="/">
+              <img src="img/logo.svg" width="50" height="50" class="d-inline-block align-content-center" alt="">
+              PomoVideo  
+            </a>
+            <a href="/" class="btn btn-outline-secondary"><img src="img/gear.png" width="30" height="30"></a>
+        </nav>
+        <br>
+        <form action="/options?_method=PUT" method="POST">
+            <section class="form-row">
+                <div class="form-group col">
+                    <label for="pomodoro"><b>Pomodoro</b></label>
+                    <input type="number" id="pomodoro" class="form-control" name="workTime" value="<%=workTime%>" placeholder="<%=workTime%>"  min="0" max="99">
+                </div>
+                <div class="form-group col">
+                    <label for="short-break"><b>Short Break</b></label>
+                    <input type="number" id="short-break" class="form-control" name="shortBreak" value="<%=shortBreak%>" placeholder="<%=shortBreak%>" min="0" max="99">
+                </div>
+                <div class="form-group col">
+                    <label for="long-break"><b>Long Break</b></label>
+                    <input type="number" id="long-break" class="form-control" name="longBreak" value="<%=longBreak%>" placeholder="<%=longBreak%>" min="0" max="99">
+                </div>
+            </section>
+            <br>
+            <button class="btn btn-success align-self-end">Save</button>
+        </form>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>

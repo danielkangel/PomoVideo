@@ -1,0 +1,25 @@
+body {
+    font-family: Montserrat, sans-serif;
+}
+
+.btn:focus {
+    outline: none;
+    box-shadow: 0px 0px 2px rgb(117, 117, 117);;
+}
+
+.navbar {
+    font-family: 'Suez One', serif;
+}
+
+#timer {
+    font-weight: bolder;
+    font-size: 5em;
+}
+
+.break-buttons {
+    font-family: 'Montserrat', serif;
+}
+
+.currTimer {
+    box-shadow: 0px 0px 2px rgb(117, 117, 117);
+}
