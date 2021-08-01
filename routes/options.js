@@ -12,12 +12,16 @@ router.use((req, res, next) => {
 });
 
 router.get('/', (req, res) => {
-    const {timers} = req.session;
-    res.render('options', timers);
+    const {timers, sound, auto} = req.session;
+    res.render('options', {timers, sound, auto});
 });
 
 router.put('/', (req, res) => {
-    req.session.timers = req.body;
+    console.log(req.body);
+    const {workTime, longBreak, shortBreak, sound, auto} = req.body;
+    req.session.timers = {workTime, longBreak, shortBreak};
+    req.session.sound = sound;
+    req.session.auto = auto;
     res.redirect('/');
 });
 

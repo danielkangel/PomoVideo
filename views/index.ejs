@@ -23,14 +23,14 @@
         </nav>
         <br>
         <div class="row break-buttons">
-            <button class="btn col-4 rounded-0 currTimer" data-mode="workTime" data-len="<%=workTime%>" id="pomo">Pomodoro</button>
-            <button class="btn col-4 rounded-0" data-mode="shortBreak" data-len="<%=shortBreak%>" id="sBreak">Short Break</button>
-            <button class="btn col-4 rounded-0" data-mode="longBreak" data-len="<%=longBreak%>" id="lBreak">Long Break</button>
+            <button class="btn col-4 rounded-0 currTimer" data-mode="workTime" data-len="<%=timers.workTime%>" id="pomo">Pomodoro</button>
+            <button class="btn col-4 rounded-0" data-mode="shortBreak" data-len="<%=timers.shortBreak%>" id="sBreak">Short Break</button>
+            <button class="btn col-4 rounded-0" data-mode="longBreak" data-len="<%=timers.longBreak%>" id="lBreak">Long Break</button>
         </div>
         <div class="row">
             <article class="card col-12 mx-auto shadow">
                 <div class="card-body text-center">
-                    <h1 id="timer"><span id="timer-minutes"><%=workTime%></span>:<span id="timer-seconds">00</span></h1>
+                    <h1 id="timer" data-sound="<%=sound%>" data-auto="<%=auto%>"><span id="timer-minutes"><%=timers.workTime%></span>:<span id="timer-seconds">00</span></h1>
                 </div>
                 <div class="row">
                     <button type="button" class="btn btn-dark col-6 rounded-0" id="reset">Reset Timer</button>

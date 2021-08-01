@@ -19,22 +19,46 @@
               <img src="img/logo.svg" width="50" height="50" class="d-inline-block align-content-center" alt="">
               PomoVideo  
             </a>
-            <a href="/" class="btn btn-outline-secondary"><img src="img/gear.png" width="30" height="30"></a>
+            <a href="/options" class="btn btn-outline-secondary"><img src="img/gear.png" width="30" height="30"></a>
         </nav>
         <br>
         <form action="/options?_method=PUT" method="POST">
-            <section class="form-row">
-                <div class="form-group col">
-                    <label for="pomodoro"><b>Pomodoro</b></label>
-                    <input type="number" id="pomodoro" class="form-control" name="workTime" value="<%=workTime%>" placeholder="<%=workTime%>"  min="0" max="99">
+            <section class="row">
+                <p><b>Length (minutes)</b></p>
+                <div class="col">
+                    <label for="pomodoro" class="options-label">Pomodoro</label>
+                    <input type="number" id="pomodoro" class="form-control" name="workTime" value="<%=timers.workTime%>" placeholder="<%=timers.workTime%>"  min="1" max="99">
                 </div>
-                <div class="form-group col">
-                    <label for="short-break"><b>Short Break</b></label>
-                    <input type="number" id="short-break" class="form-control" name="shortBreak" value="<%=shortBreak%>" placeholder="<%=shortBreak%>" min="0" max="99">
+                <div class="col">
+                    <label for="short-break" class="options-label">Short Break</label>
+                    <input type="number" id="short-break" class="form-control" name="shortBreak" value="<%=timers.shortBreak%>" placeholder="<%=timers.shortBreak%>" min="1" max="99">
                 </div>
-                <div class="form-group col">
-                    <label for="long-break"><b>Long Break</b></label>
-                    <input type="number" id="long-break" class="form-control" name="longBreak" value="<%=longBreak%>" placeholder="<%=longBreak%>" min="0" max="99">
+                <div class="col">
+                    <label for="long-break" class="options-label">Long Break</label>
+                    <input type="number" id="long-break" class="form-control" name="longBreak" value="<%=timers.longBreak%>" placeholder="<%=timers.longBreak%>" min="1" max="99">
+                </div>
+            </section>
+            <br>
+            <section class="row">
+                <div class="col">
+                    <label for="sound" class="options-label">Alarm Sound</label>
+                    <select name="sound" id="sound">
+                        <% const names = ["arpeggio", "electronic", "chime", "mallets", "wood"] %>
+                        <% for (let name of names) { %>
+                            <% if (name === sound) {%>
+                                <option value="<%=name%>" selected><%=name%></option>
+                            <% } else {  %>
+                                <option value="<%=name%>"><%=name%></option>
+                            <% } %>  
+                        <% } %> 
+                    </select>
+                </div>
+            </section>
+            <br>
+            <section class="row">
+                <div class="col">
+                    <label for="auto" class="options-label">Auto Start</label>
+                    <input type="checkbox" class="form-check-input" id="auto" name="auto" value="true" <%= auto === 'true' ? "checked" : ""%>>
                 </div>
             </section>
             <br>

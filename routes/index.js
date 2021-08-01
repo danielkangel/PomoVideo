@@ -11,8 +11,8 @@ router.use((req, res, next) => {
 });
 
 router.get('/', (req, res) => {
-    const {timers} = req.session;
-    res.render('index', timers);
+    const {timers, sound, auto} = req.session;
+    res.render('index', {timers, sound, auto});
 });
 
 module.exports = router;

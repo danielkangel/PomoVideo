@@ -13,13 +13,13 @@ body {
 
 #timer {
     font-weight: bolder;
-    font-size: 5em;
-}
-
-.break-buttons {
-    font-family: 'Montserrat', serif;
+    font-size: 5rem;
 }
 
 .currTimer {
     box-shadow: 0px 0px 2px rgb(117, 117, 117);
+}
+
+.options-label {
+    font-size: 0.85rem;
 }
