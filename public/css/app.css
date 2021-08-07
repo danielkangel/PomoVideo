@@ -7,7 +7,7 @@ body {
     box-shadow: 0px 0px 2px rgb(117, 117, 117);;
 }
 
-.navbar {
+#home {
     font-family: 'Suez One', serif;
 }
 
@@ -16,10 +16,30 @@ body {
     font-size: 5rem;
 }
 
+.options-card {
+    min-width: 480px;
+}
+
 .currTimer {
-    box-shadow: 0px 0px 2px rgb(117, 117, 117);
+    background-color: rgb(226, 226, 226);
 }
 
 .options-label {
     font-size: 0.85rem;
+}
+
+.container {
+    min-width: 480px;
+}
+
+.youtube-card {
+    aspect-ratio: 16 / 9;
+}
+
+.video-background {
+    background-color: rgb(226, 226, 226);
+}
+
+.del-button {
+    font-weight: bold;
 }

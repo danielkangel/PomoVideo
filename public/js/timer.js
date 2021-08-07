@@ -1,29 +1,44 @@
-// loads the current timer lengths
-const pomoTime = parseInt(document.querySelector("#pomo").dataset.len);
-const shortTime = parseInt(document.querySelector("#sBreak").dataset.len);
-const longTime = parseInt(document.querySelector("#lBreak").dataset.len);
-
 // puts the current timer lengths into an object
-const timers = {
-    workTime: pomoTime,
-    shortBreak: shortTime,
-    longBreak: longTime
-};
+let timers;
 
 // loads the main timer element
 const timerElem = document.querySelector('#timer');
 
 // loads the currently selected audio
-const audio = new Audio(`audio/${timerElem.dataset.sound}.mp3`);
+let audio;
 
 // checks if auto start needs to be used
-const auto = timerElem.dataset.auto;
+let auto;
 
 // variable used to keep track of pomodoros finished
 let pomoCount = 0;
 
 // interval used for counting down every second
 let everySecond;
+
+// holds the video queue
+let videos;
+
+// hold the YT player embed
+let player;
+
+
+// selects the pomodoro timer when the page is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    axios.get('http://localhost:3000/options/object')
+    .then(res => {
+        const {data} = res;
+        timers = data.timers;
+        auto = data.auto;
+        audio = new Audio(`audio/${data.sound}.mp3`);
+        audio.volume = data.volume / 100.0;
+        videos = data.videos;
+        changeMode('workTime');
+    })
+    .catch (err => {
+        console.log(err);
+    });
+});
 
 // changes the mode when the corresponding button is clicked
 const selectMode = document.querySelector(".break-buttons");
@@ -48,10 +63,115 @@ resetButton.addEventListener('click', ()=> {
     changeMode(mode, true);
 });
 
-// selects the pomodoro timer when the page is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    changeMode('workTime');
+// elements required to add videos 
+const videoList = document.querySelector("#video-list");
+const addVideo = document.querySelector("#add-video-submit");
+const enterLink = document.querySelector("#link");
+
+// adds a video when the modal is submitted 
+addVideo.addEventListener('click', () => {
+    // get the input value and reset it 
+    const link = enterLink.value;
+    enterLink.value = '';
+
+    // basic link validation
+    const vidId = parseId(link);
+    if (vidId) {
+        // send a post request to save the videos in the session config 
+        axios.post(`http://localhost:3000/${vidId}`)
+        .then(res => {
+            // destructure the generated video object
+            const {data} = res;
+
+            // generate all the required elements
+            const article = genArticle();
+            article.appendChild(genImg(data.img));
+            article.appendChild(genP(data.title));
+            article.appendChild(genBtn());
+            article.id = data.uuid;
+            videoList.appendChild(article);
+            videoList.appendChild(document.createElement('br'));
+
+            // add the video onto this script's list
+            videos.push(data);
+
+            // if the video list was previously empty, generate a new player
+            if (videos.length === 1){ 
+                player = genPlayer(vidId);
+            }
+        })
+        .catch (err => {
+            console.log(err);
+        });
+    }
 });
+
+// generates the article containing video info
+function genArticle(){
+    const article = document.createElement('article');
+    article.classList.add('row', 'py-2', 'video-background', 'mx-1', 'rounded');
+    return article;
+}
+
+// generates the video thumbnail
+function genImg(url){
+    const img = document.createElement('img');
+    img.src = url;
+    img.alt = "Thumbnail";
+    img.classList.add("col-3");
+    return img;
+}
+
+// generates the video title
+function genP(title){
+    const p = document.createElement('p');
+    p.classList.add('col-7', 'mb-0', 'p-0', 'align-self-center');
+    p.textContent = title;
+    return p;
+}
+
+// generates the delete button
+function genBtn() {
+    const btn = document.createElement('button');
+    btn.classList.add("btn", "col-2", "del-button");
+    btn.innerText = "x";
+    btn.addEventListener('click', deleteVid);
+    return btn;
+}
+
+// adds the delete function to all buttons on the page
+const delBtns = document.querySelectorAll('.del-button');
+delBtns.forEach(btn => btn.addEventListener('click', deleteVid));
+
+// deletes a video from the queue
+function deleteVid(btn){
+    // selects the vid being deleted
+    const vid = btn.target.parentNode;
+
+    // sends a delete request for the video
+    axios.delete(`/${vid.id}`)
+    .then(res => {
+        // selects the <br> element after the video card
+        const br = vid.nextSibling;
+        
+        // remove the video and the <br> element
+        vid.parentNode.removeChild(vid);
+        br.parentNode.removeChild(br);
+
+        // if the delete request was for the first video, clear the player
+        if (vid.id === videos[0].uuid){
+            player.destroy();
+            // if theres a next video in the queue, generate a player of that video
+            if (videos[1]) player = genPlayer(videos[1].id);
+        }
+        
+        // update the local video array
+        videos = res.data;
+    })
+    .catch(err => {
+        console.log(err);
+    });
+}
 
 // checks the mode of the button clicked
 function checkMode(btn){
@@ -159,7 +279,7 @@ function swapButton() {
 
 // updates the displayed timer seen in the main card and header
 function changeClock() {
-    // destructuring remainingTime from 
+    // destructuring remainingTime from timers
     const {remainingTime} = timers;
 
     // formats the displayed timer text
@@ -178,4 +298,47 @@ function changeClock() {
     timerMin.textContent = min;
     timerSec.textContent = sec;
     header.textContent = headerString;
+}
+
+// parses the submitted link, checking if it is the right format
+function parseId(link) {
+    let video_id = link.split('v=')[1];
+    if (video_id) {
+        const ampersandPosition = video_id.indexOf('&');
+        if(ampersandPosition != -1) video_id = video_id.substring(0, ampersandPosition);
+        return video_id.length == 11 ? video_id : undefined; 
+    }
+    return undefined;
+}
+
+// adds the YouTube iframe api
+// FIXME: youtube responds with 10+ cookies generating SameSite warnings
+const tag = document.createElement('script');
+tag.src = "https://www.youtube.com/iframe_api";
+let firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+// load the first video when the player loads
+function onYouTubeIframeAPIReady() {
+    if (videos[0]){
+        player = genPlayer(videos[0].id);
+    }
+}
+
+// returns a new player with the passed id
+function genPlayer(id) {
+    return new YT.Player('player', {
+        width: '100%',
+        height: '100%',
+        host: 'http://www.youtube-nocookie.com',
+        videoId: id,
+        playerVars: {
+            origin: window.location.host,
+            'playsinline': 1,
+            'modestbranding': 1,
+            'disablekb': 1,
+            'iv_load_policy': 3,
+            'fs' : 0,
+        }
+    });
 }
