@@ -13,14 +13,16 @@
     <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
-    <div class="container">
-        <nav class="navbar navbar-light border-bottom">
-            <a class="navbar-brand" href="/" id="home">
-              <img src="img/logo.svg" width="50" height="50" class="d-inline-block align-content-center" alt="">
-              PomoVideo  
+    <nav class="navbar navbar-light border-bottom top-navbar">
+        <div class="container">
+            <a class="navbar-brand text-white" href="/" id="home">
+            <img src="img/icon.png" width="30" height="30" alt="">
+            PomoVideo
             </a>
-            <a href="/options" class="btn btn-outline-secondary"><img src="img/gear.png" width="30" height="30"></a>
-        </nav>
+            <a href="/options" class="btn btn-light"><img src="img/gear.png" width="30" height="30"></a>
+        </div>
+    </nav>
+    <div class="container">
         <br>
         <article class="card shadow p-3 col-6 mx-auto options-card">
             <form action="/options?_method=PUT" method="POST">

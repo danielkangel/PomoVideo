@@ -2,13 +2,12 @@ body {
     font-family: Montserrat, sans-serif;
 }
 
-.btn:focus {
-    outline: none;
-    box-shadow: 0px 0px 2px rgb(117, 117, 117);;
+.top-navbar {
+    background-color: #212529;
 }
 
 #home {
-    font-family: 'Suez One', serif;
+    font-weight: bolder;
 }
 
 #timer {
@@ -22,6 +21,10 @@ body {
 
 .currTimer {
     background-color: rgb(226, 226, 226);
+}
+
+.btn:focus{
+    box-shadow: none;
 }
 
 .options-label {

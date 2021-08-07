@@ -13,15 +13,16 @@
     <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
+    <nav class="navbar navbar-light border-bottom top-navbar">
+        <div class="container">
+            <a class="navbar-brand text-white" href="/" id="home">
+            <img src="img/icon.png" width="30" height="30" alt="">
+            PomoVideo
+            </a>
+            <a href="/options" class="btn btn-light"><img src="img/gear.png" width="30" height="30"></a>
+        </div>
+    </nav>
     <div class="container">
-            <nav class="navbar navbar-light border-bottom">
-                <a class="navbar-brand" href="" id="home">
-                <img src="img/logo.svg" width="50" height="50" alt="">
-                PomoVideo
-                </a>
-                <a href="/options" class="btn btn-outline-secondary"><img src="img/gear.png" width="30" height="30"></a>
-            </nav>
-
         <br>
         <div class="row">
             <div class="col-lg-8 col-12">
@@ -41,7 +42,7 @@
                     <button class="btn col-4 rounded-0" data-mode="longBreak" id="lBreak">Long Break</button>
                 </div>
                 <div class="row">
-                    <article class="card col-12 shadow">
+                    <article class="card col-12 shadow rounded-0">
                         <div class="row">
                             <div class="card-body text-center">
                                 <h1 id="timer"><span id="timer-minutes"><%=timers.workTime%></span>:<span id="timer-seconds">00</span></h1>
