@@ -22,6 +22,11 @@ let videos;
 // hold the YT player embed
 let player;
 
+// checks if videos can only be played during breaks
+let breakOnly;
+
+// holds the current video position
+let videoPos = 0;
 
 // selects the pomodoro timer when the page is loaded
 document.addEventListener('DOMContentLoaded', () => {
@@ -33,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
         audio = new Audio(`audio/${data.sound}.mp3`);
         audio.volume = data.volume / 100.0;
         videos = data.videos;
+        breakOnly = data.breakOnly;
         changeMode('workTime');
     })
     .catch (err => {
@@ -82,7 +88,11 @@ addVideo.addEventListener('click', () => {
         .then(res => {
             // destructure the generated video object
             const {data} = res;
-
+            console.log(videos);
+            if (videos.length === 0) {
+                const placeholder = document.querySelector('#placeholder');
+                placeholder.parentNode.removeChild(placeholder);
+            } 
             // generate all the required elements
             const article = genArticle();
             article.appendChild(genImg(data.img));
@@ -90,7 +100,6 @@ addVideo.addEventListener('click', () => {
             article.appendChild(genBtn());
             article.id = data.uuid;
             videoList.appendChild(article);
-            videoList.appendChild(document.createElement('br'));
 
             // add the video onto this script's list
             videos.push(data);
@@ -109,7 +118,7 @@ addVideo.addEventListener('click', () => {
 // generates the article containing video info
 function genArticle(){
     const article = document.createElement('article');
-    article.classList.add('row', 'py-2', 'video-background', 'mx-1', 'rounded');
+    article.classList.add('row', 'py-2', 'video-background', 'mx-1', 'rounded', 'mb-3');
     return article;
 }
 
@@ -151,18 +160,19 @@ function deleteVid(btn){
     // sends a delete request for the video
     axios.delete(`/${vid.id}`)
     .then(res => {
-        // selects the <br> element after the video card
-        const br = vid.nextSibling;
         
-        // remove the video and the <br> element
+        // remove the video
         vid.parentNode.removeChild(vid);
-        br.parentNode.removeChild(br);
 
         // if the delete request was for the first video, clear the player
         if (vid.id === videos[0].uuid){
             player.destroy();
             // if theres a next video in the queue, generate a player of that video
             if (videos[1]) player = genPlayer(videos[1].id);
+            else {
+                videoList.appendChild(genPlaceholder());
+                player = undefined;
+            }
         }
         
         // update the local video array
@@ -171,6 +181,15 @@ function deleteVid(btn){
     .catch(err => {
         console.log(err);
     });
+}
+
+// generates placeholder tag
+function genPlaceholder(){
+    const placeholder = document.createElement('p');
+    placeholder.innerText = ". . .";
+    placeholder.id = "placeholder";
+    placeholder.classList.add('align-self-center', 'fw-bold');
+    return placeholder;
 }
 
 // checks the mode of the button clicked
@@ -221,7 +240,7 @@ function beginTimer(){
                 } else {
                     changeMode('longBreak');
                     pomoCount = 0;
-                } 
+                }
 
             } else {
                 changeMode('workTime');
@@ -230,6 +249,13 @@ function beginTimer(){
             // if auto start is selected, continue the interval
             if (auto === 'true'){
                 remainingTime = timers.remainingTime;
+                if (breakOnly === 'true') {
+                    if (timers.mode === 'workTime') {
+                        player && player.pauseVideo();
+                    } else {
+                        player && player.playVideo();
+                    }   
+                }
             } else {
                 clearInterval(everySecond);
             }
@@ -260,19 +286,21 @@ function changeMode(mode, clicked = false){
 
 // swaps the start/stop button to another mode
 function swapButton() {
-    if (startButton.dataset.mode == 'stop') {
+    if (startButton.dataset.mode === 'stop') {
         // updates the stop button to start
         startButton.dataset.mode = 'start';
         startButton.textContent = "Start Timer";
         startButton.classList.remove('btn-danger');
         startButton.classList.add('btn-success');
         clearInterval(everySecond);
-    } else if (startButton.dataset.mode == 'start') {
+        player && player.pauseVideo();
+    } else if (startButton.dataset.mode === 'start') {
         // updates the start button to stop
         startButton.dataset.mode = 'stop';
         startButton.textContent = 'Stop Timer';
         startButton.classList.add('btn-danger');
         startButton.classList.remove('btn-success');
+        if (breakOnly && timers.mode !== 'workTime') player && player.playVideo();
     }
 }
 
@@ -339,6 +367,26 @@ function genPlayer(id) {
             'disablekb': 1,
             'iv_load_policy': 3,
             'fs' : 0,
+        },
+        events: {
+            'onReady': onPlayerReady,
+            'onStateChange': checkPlayer, 
         }
     });
+}
+
+function onPlayerReady() {
+    if (breakOnly && startButton.dataset.mode === 'stop' && timers.mode != 'workTime'){
+        player.playVideo();
+    }
+}
+
+function checkPlayer(state){
+    if ((startButton.dataset.mode === 'start' || (breakOnly && timers.mode === 'workTime')) && state.data == YT.PlayerState.PLAYING){
+        player.pauseVideo();
+    } else if (state.data == YT.PlayerState.ENDED){
+        console.log("we in here");
+        const element = document.getElementById(videos[0].uuid).lastChild;
+        element.dispatchEvent(new Event('click'));
+    }
 }
