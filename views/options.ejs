@@ -13,18 +13,15 @@
     <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
-    <nav class="navbar navbar-light border-bottom top-navbar">
-        <div class="container">
-            <a class="navbar-brand text-white" href="/" id="home">
-            <img src="img/icon.png" width="30" height="30" alt="">
-            PomoVideo
+    <main class="wrap">
+        <nav class="navbar navbar-light dark-gray mb-3">
+            <a class="navbar-brand text-white mx-3" href="/" id="home">
+                <img src="img/icon.png" width="30" height="30" alt="">
+                PomoVideo
             </a>
-            <a href="/options" class="btn btn-light"><img src="img/gear.png" width="30" height="30"></a>
-        </div>
-    </nav>
-    <div class="container">
-        <br>
-        <article class="card shadow p-3 col-6 mx-auto options-card">
+            <a href="/options" class="btn btn-light mx-3"><img src="img/gear.png" width="30" height="30"></a>
+        </nav>
+        <article class="card shadow p-3 col-6 mx-auto options-card mb-3">
             <form action="/options?_method=PUT" method="POST">
                 <section class="row">
                     <p><b>Length (minutes)</b></p>
@@ -67,19 +64,40 @@
                     </div>
                 </section>
                 <hr>
-                <section class="row">
+                <section class="row mb-3">
                     <p><b>Misc. Settings</b></p>
-                    <div class="col">
-                        <label for="auto" class="options-label">Auto Start</label>
-                        <input type="checkbox" class="form-check-input" id="auto" name="auto" value="true" <%= auto === 'true' ? "checked" : ""%>>
+                    <div class="row">
+                        <div class="col">
+                            <label for="breakOnly" class="options-label">Video Breaks</label>
+                            <input type="checkbox" class="form-check-input" id="breakOnly" name="breakOnly" value="true" <%= breakOnly === 'true' ? "checked" : "" %>>
+                        </div>
+                        <div class="col">
+                            <p class="options-label">Syncs video playback with break countdown.</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="auto" class="options-label">Auto Start</label>
+                            <input type="checkbox" class="form-check-input" id="auto" name="auto" value="true" <%= auto === 'true' ? "checked" : ""%>>
+                        </div>
+                        <div class="col">
+                            <p class="options-label">Auto starts breaks and pomodoros.</p>
+                        </div>
                     </div>
                 </section>
-                <br>
                 <a href="/" class="btn btn-dark">Back To Home</a>
                 <button class="btn btn-success">Save</button>
             </form>
         </article>
-    </div>
+        <div class="push"></div>
+    </main>
+
+    <footer class="dark-gray text-center footer">
+        <a class="btn" href="https://github.com/danielkangel" target="_blank" rel="noopener noreferrer">
+            <img src="img/github.png" alt="GitHub Logo">
+        </a>
+    </footer>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script src="js/option-preview.js"></script>
 </body>

@@ -1,8 +1,12 @@
+html, body {
+    height: 100%;
+}
+
 body {
     font-family: Montserrat, sans-serif;
 }
 
-.top-navbar {
+.dark-gray {
     background-color: #212529;
 }
 
@@ -19,7 +23,7 @@ body {
     min-width: 480px;
 }
 
-.currTimer {
+.currTimer, .video-background {
     background-color: rgb(226, 226, 226);
 }
 
@@ -31,18 +35,23 @@ body {
     font-size: 0.85rem;
 }
 
-.container {
-    min-width: 480px;
+.wrap {
+    min-height: 100%;
+    margin-bottom: -50px;
 }
 
 .youtube-card {
     aspect-ratio: 16 / 9;
 }
 
-.video-background {
-    background-color: rgb(226, 226, 226);
-}
-
 .del-button {
     font-weight: bold;
+}
+
+.footer, .wrap {
+    min-width: 480px;
+}
+
+.footer, .push {
+    height: 50px;
 }

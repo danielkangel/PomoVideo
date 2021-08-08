@@ -13,19 +13,16 @@
     <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
-    <nav class="navbar navbar-light border-bottom top-navbar">
-        <div class="container">
-            <a class="navbar-brand text-white" href="/" id="home">
+    <main class="wrap">
+        <nav class="navbar navbar-light dark-gray mb-3">
+            <a class="navbar-brand text-white mx-3" href="/" id="home">
             <img src="img/icon.png" width="30" height="30" alt="">
             PomoVideo
             </a>
-            <a href="/options" class="btn btn-light"><img src="img/gear.png" width="30" height="30"></a>
-        </div>
-    </nav>
-    <div class="container">
-        <br>
-        <div class="row">
-            <div class="col-lg-8 col-12">
+            <a href="/options" class="btn btn-light mx-3"><img src="img/gear.png" width="30" height="30"></a>
+        </nav>
+        <div class="row mx-3">
+            <div class="col-lg-8 col-12 mb-3">
                 <article class="card shadow youtube-card">
                     <div class="card-body">
                         <div class="row">
@@ -33,7 +30,6 @@
                         </div>
                     </div>
                 </article>
-                <br>
             </div>
             <div class="col-lg-4 col-12">
                 <div class="row break-buttons">
@@ -41,7 +37,7 @@
                     <button class="btn col-4 rounded-0" data-mode="shortBreak" id="sBreak">Short Break</button>
                     <button class="btn col-4 rounded-0" data-mode="longBreak" id="lBreak">Long Break</button>
                 </div>
-                <div class="row">
+                <div class="row mb-3">
                     <article class="card col-12 shadow rounded-0">
                         <div class="row">
                             <div class="card-body text-center">
@@ -54,8 +50,7 @@
                         </div>
                     </article>
                 </div>
-                <br>
-                <div class="row">
+                <div class="row mb-3">
                     <article class="card col-12 shadow" id="video-list">
                         <div class="row">
                             <div class="cardbody text-center pt-2">
@@ -65,21 +60,31 @@
                                 <hr class="mt-1">
                             </div>
                         </div>
-                        <% for (let video of videos) { %>
-                            <article class="row py-2 video-background mx-1 rounded" id="<%=video.uuid%>">
-                                <img src="<%=video.img%>" alt="Thumbnail" class="col-3">
-                                <p class="col-7 mb-0 p-0 align-self-center"><%=video.title%></p>
-                                <button class="btn col-2 del-button">
-                                    x 
-                                </button>
-                            </article>
-                            <br>
-                        <% } %>
+                        <% if (videos.length) { %>
+                            <% for (let video of videos) { %>
+                                <article class="row py-2 video-background mx-1 rounded mb-3" id="<%=video.uuid%>">
+                                    <img src="<%=video.img%>" alt="Thumbnail" class="col-3">
+                                    <p class="col-7 mb-0 p-0 align-self-center"><%=video.title%></p>
+                                    <button class="btn col-2 del-button">
+                                        x 
+                                    </button>
+                                </article>
+                            <% } %>
+                        <% } else { %>
+                            <p class="align-self-center fw-bold" id="placeholder">. . .</p>
+                        <% }%>
                     </article>
             </div>
         </div>
-    </div>
+        <div class="push"></div>
+    </main>
 
+    <footer class="dark-gray text-center footer">
+        <a class="btn" href="https://github.com/danielkangel" target="_blank" rel="noopener noreferrer">
+            <img src="img/github.png" alt="GitHub Logo">
+        </a>
+    </footer>
+    
     <!-- Adding Videos Modal -->
     <section class="modal fade" id="add-video" tabindex="-1" aria-labelledby="add-video-label" aria-hidden="true">
         <div class="modal-dialog">
