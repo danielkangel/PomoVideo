@@ -5,8 +5,9 @@ const defOptions = {
         longBreak: '15',
     },
     sound : 'arpeggio',
-    auto: undefined,
     volume: 100,
+    auto: undefined,
+    breakOnly: 'true',
     videos : [{
         id: 'JXeJANDKwDc',
         title: 'What Are You Doing W...',
