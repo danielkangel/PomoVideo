@@ -1,19 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const defTimer = require("../models/default");
 const axios = require('axios');
 const {v4: uuidv4} = require('uuid');
 
 router.use('/options', require('./options'));
 router.use(express.urlencoded({extended:true}));
-
-// checks if session exists yet
-router.use((req, res, next) => {
-    if (!req.session.settings) {
-        req.session.settings = defTimer;
-    }
-    next();
-});
 
 // loads the index template with the user settings
 router.get('/', (req, res) => {

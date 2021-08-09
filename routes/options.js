@@ -1,16 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const defTimer = require('../models/default');
 
 router.use(express.urlencoded({extended:true}));
-
-// checks if session exists yet
-router.use((req, res, next) => {
-    if (!req.session.settings) {
-        req.session.settings = defTimer;
-    }
-    next();
-});
 
 // renders the options template with user's settings
 router.get('/', (req, res) => {
