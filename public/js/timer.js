@@ -385,8 +385,7 @@ function checkPlayer(state){
     if ((startButton.dataset.mode === 'start' || (breakOnly && timers.mode === 'workTime')) && state.data == YT.PlayerState.PLAYING){
         player.pauseVideo();
     } else if (state.data == YT.PlayerState.ENDED){
-        console.log("we in here");
-        const element = document.getElementById(videos[0].uuid).lastChild;
+        const element = document.getElementById(videos[0].uuid).querySelector('.del-button');
         element.dispatchEvent(new Event('click'));
     }
 }
