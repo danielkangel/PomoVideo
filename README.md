@@ -1,4 +1,4 @@
-# [<img src="./public/img/icon" width="30">PomoVideo](https://pomovideo.herokuapp.com/)
+# [<img src="./public/img/icon.png" width="30">PomoVideo](https://pomovideo.herokuapp.com/)
 
 PomoVideo is a pomodoro timer app with a built in YouTube video queue. Based on the [Pomodoro Technique](https://en.wikipedia.org/wiki/Pomodoro_Technique), this app is designed to reward work time with fun breaks.
 
