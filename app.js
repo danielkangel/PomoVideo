@@ -15,7 +15,7 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
     cookie: {secure: false, sameSite: 'strict'},
-    store: MongoStore.create({ mongoUrl: process.env.MONGO_URL})
+    store: MongoStore.create({ mongoUrl: process.env.DATABASE_URL})
 }));
 app.use(express.static(__dirname + '/public'));
 app.use((req, res, next) => {
