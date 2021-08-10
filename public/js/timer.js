@@ -40,6 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
         videos = data.videos;
         breakOnly = data.breakOnly;
         changeMode('workTime');
+        getFirstPlayer();
     })
     .catch (err => {
         console.log(err);
@@ -339,15 +340,8 @@ function parseId(link) {
     return undefined;
 }
 
-// adds the YouTube iframe api
-// FIXME: youtube responds with 10+ cookies generating SameSite warnings
-const tag = document.createElement('script');
-tag.src = "https://www.youtube.com/iframe_api";
-let firstScriptTag = document.getElementsByTagName('script')[0];
-firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
 // load the first video when the player loads
-function onYouTubeIframeAPIReady() {
+function getFirstPlayer() {
     if (videos[0]){
         player = genPlayer(videos[0].id);
     }
@@ -382,7 +376,7 @@ function onPlayerReady() {
 }
 
 function checkPlayer(state){
-    if ((startButton.dataset.mode === 'start' || (breakOnly && timers.mode === 'workTime')) && state.data == YT.PlayerState.PLAYING){
+    if ((breakOnly ? startButton.dataset.mode === 'start' || timers.mode === 'workTime' : false) && state.data == YT.PlayerState.PLAYING){
         player.pauseVideo();
     } else if (state.data == YT.PlayerState.ENDED){
         const element = document.getElementById(videos[0].uuid).querySelector('.del-button');
