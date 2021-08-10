@@ -10,7 +10,7 @@ First, open [PomoVideo](https://pomovideo.herokuapp.com/) in your web browser.
 
 1. **Add** interesting videos to your queue.
 2. **Start** timer and get to work.
-3. **Relax** and take a break for a while.
+3. **Relax** and take a break while enjoying a video.
 4. **Continue** until work is done.
 
 Adjust any options by clicking the gear button in the top right.
